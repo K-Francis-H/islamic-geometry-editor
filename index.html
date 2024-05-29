@@ -2,9 +2,317 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<script src="islamic-geometry-editor.js"></script>
-	</head>
+		<script>
+			document.addEventListener("DOMContentLoaded", function(){
+				let canvas = document.getElementById("canvas");
+				let ctx = canvas.getContext("2d");
+
+				let func = function(){cordobaUnit(ctx,40,3)};
+				let func2 = function(){fahidiUnit(ctx,80,2)};
+				let func3 = function(){kharraqanUnit(ctx,80,2)};
+				let func4 = function(){madreseUnit(ctx,40,2)};
+				let func5 = function(){kairouanUnit(ctx,80,2)};
+
+
+				//let g = ctx.createRadialGradient(400,400,200,400,400,400);
+				//g.addColorStop(0,"red")
+				//g.addColorStop(0.5,"teal")
+				//g.addColorStop(1,"blue");
+				render(ctx, canvas, func);
+				
+				let select = document.getElementById("select")
+				select.addEventListener('change', function(){
+					let opt = select.value;
+					let f = func;
+					switch(opt){
+						case "cordoba": f = func; break;
+						case "fahidi": f = func2; break;
+						case "kharraqan": f = func3; break;
+						case "madrese": f = func4; break;
+						case "kairouan": f = func5; break;
+					}
+					render(ctx, canvas, f);
+				})
+			});
+
+			function render(ctx, canvas, drawFunc){
+				ctx.fillStyle = "navy";
+				ctx.fillRect(0,0,canvas.width,canvas.height);
+				for(let i=0; i < canvas.width/80; i++){
+					for(let j=0; j < canvas.height/80; j++){
+						ctx.save();
+						ctx.translate(i*80+40,j*80+40);
+						//func();
+						//func2();
+						//func3();
+						//func4();
+						drawFunc();
+						ctx.restore();
+					}	
+				}
+			}
+
+			function cordobaUnit(ctx, size, lw){
+				let c8 = 360/8*Math.PI/180;
+				let v1 = [0.5*size,0*size];
+				let v2 = [0.8*size,1*size];
+				let v3 = [0.8*size,-1*size];
+
+				let v4 = [0.5*Math.sin(c8)*size,0.5*Math.cos(c8)*size];
+				let v5 = [0.5*Math.sin(c8)*size,-0.5*Math.cos(c8)*size];
+				let v6 = [1*size,0*size];
+
+				let inner1 = [v2,v1];
+				let inner2 = [v1,v3];
+				let outer1 = [v4,v6];
+				let outer2 = [v6,v5];
+
+				ctx.save();
+				ctx.lineWidth=lw;
+				//trace paths [v2,v1,v3] , [v4,v6,v5]
+				for(let i=0; i < 360; i+=90){
+					ctx.rotate(Math.PI/180*i);					
+					
+					ctx.beginPath();
+					ctx.strokeStyle="silver";
+					ctx.moveTo(v2[0], v2[1]);
+					ctx.lineTo(v1[0], v1[1]);
+					ctx.lineTo(v3[0], v3[1]);
+					ctx.stroke();
+
+					ctx.beginPath();
+					ctx.strokeStyle="silver";
+					ctx.moveTo(v4[0], v4[1]);
+					ctx.lineTo(v6[0], v6[1]);
+					ctx.lineTo(v5[0], v5[1]);
+					ctx.stroke();
+				}
+				ctx.restore();
+			}
+
+			function fahidiUnit(ctx, size, lw){
+				let v0 = [0.2*size,-0.5*size];
+				let v1 = [0.2*size,-0.1*size];
+				let v2 = [0.5*size,0*size];
+				let v3 = [0.2*size,0.1*size];
+				let v4 = [0.2*size,0.5*size];
+
+				//inner = [v0,v1,v2,v3,v4];
+
+				let v5 = [0.48*size,-0.48*size];
+				let v6 = [0.5*size,-0.4*size];
+				let v7 = [0.25*size,0*size];
+				let v8 = [0.5*size,0.4*size];
+				let v9 = [0.48*size,0.48*size];
+
+				ctx.save();
+				ctx.lineWidth=lw;
+				//trace paths [v2,v1,v3] , [v4,v6,v5]
+				for(let i=0; i < 360; i+=90){
+					ctx.rotate(Math.PI/180*i);					
+					
+					ctx.beginPath();
+					ctx.strokeStyle="gold";
+					ctx.moveTo(v0[0], v0[1]);
+					ctx.lineTo(v1[0], v1[1]);
+					ctx.lineTo(v2[0], v2[1]);
+					ctx.lineTo(v3[0], v3[1]);
+					ctx.lineTo(v4[0], v4[1]);
+					ctx.stroke();
+
+					ctx.beginPath();
+					ctx.strokeStyle="gold";
+					ctx.lineTo(v5[0], v5[1]);
+					ctx.lineTo(v6[0], v6[1]);
+					ctx.lineTo(v7[0], v7[1]);
+					ctx.lineTo(v8[0], v8[1]);
+					ctx.lineTo(v9[0], v9[1]);
+					ctx.stroke();
+				}
+				ctx.restore();
+			}
+
+			function kharraqanUnit(ctx, size, lw){
+				let v0 = [0,0];
+				let v1 = [0.1*size,0.2*size];
+				let v2 = [0.1*size,-0.2*size];
+
+				let v3 = [0.4*size,0.2*size];
+				let v4 = [0.5*size,0.5*size];
+
+				let v5 = [0.4*size,-0.2*size];
+				let v6 = [0.5*size,-0.5*size];
+
+				innerTop = [v0,v1,v3,v4];
+				innerBottom = [v0,v2,v5,v6];
+
+				//outer
+				let v7 = [0,-0.5*size];
+				let v8 = [0.3*size,-0.3*size];
+				let v9 = [0.3*size,-0.1*size];
+				let v10 = [0.5*size,0];
+				let v11 = [0.3*size,0.1*size];
+				let v12 = [0.3*size,0.3*size];
+				let v13 = [0,0.5*size];
+
+				ctx.save();
+				ctx.lineWidth=lw;
+				//trace paths [v2,v1,v3] , [v4,v6,v5]
+				//i+=90 looks cool too
+				for(let i=0; i < 360; i+=180){
+					ctx.rotate(Math.PI/180*i);					
+					
+					ctx.beginPath();
+					ctx.strokeStyle="gold";
+					ctx.moveTo(v0[0], v0[1]);
+					ctx.lineTo(v1[0], v1[1]);
+					ctx.lineTo(v3[0], v3[1]);
+					ctx.lineTo(v4[0], v4[1]);
+					ctx.stroke();
+
+					ctx.beginPath();
+					ctx.strokeStyle="gold";
+					ctx.moveTo(v0[0], v0[1]);
+					ctx.lineTo(v2[0], v2[1]);
+					ctx.lineTo(v5[0], v5[1]);
+					ctx.lineTo(v6[0], v6[1]);
+					ctx.stroke();
+
+					ctx.beginPath();
+					ctx.strokeStyle="gold";
+					ctx.lineTo(v7[0], v7[1]);
+					ctx.lineTo(v8[0], v8[1]);
+					ctx.lineTo(v9[0], v9[1]);
+					ctx.lineTo(v10[0], v10[1]);
+					ctx.lineTo(v11[0], v11[1]);
+					ctx.lineTo(v12[0], v12[1]);
+					ctx.lineTo(v13[0], v13[1]);
+					ctx.stroke();
+				}
+				ctx.restore();
+			}
+
+			function madreseUnit(ctx, size, lw){
+				let c8 = 360/8 * Math.PI/180;
+				let c16 = c8/2;
+				let v1 = [0.5*size,0];
+				let v2 = [0.8*size,1*size];
+				let v3 = [0.8*size,-1*size];
+				//0.3* looks great too, though its a straight line no inner star
+				let v4 = [0.1*Math.sin(c8)*size,0.1*Math.cos(c8)*size];
+				let v5 = [0.1*Math.sin(c8)*size,-0.1*Math.cos(c8)*size];
+
+				let v6 = [0.9*Math.sin(c8*1.5)*size,-0.9*Math.cos(c8*1.5)*size];
+				let v7 = [0.9*Math.sin(c8*1.5)*size,0.9*Math.cos(c8*1.5)*size];
+
+				let v8 = [0.7*size,-1*size];
+				let v9 = [0.7*size,1*size];
+
+				ctx.save();
+				ctx.lineWidth=lw;
+				//trace paths [v2,v1,v3] , [v4,v6,v5]
+				//i+=90 looks cool too
+				for(let i=0; i < 360; i+=90){
+					ctx.rotate(Math.PI/180*i);
+
+					ctx.beginPath();
+					ctx.strokeStyle="gold";
+					ctx.moveTo(v4[0], v4[1]);
+					ctx.lineTo(v6[0], v6[1]);
+					ctx.stroke();
+
+					ctx.beginPath();
+					ctx.strokeStyle="gold";
+					ctx.moveTo(v5[0], v5[1]);
+					ctx.lineTo(v7[0], v7[1]);
+					ctx.stroke();
+
+					ctx.beginPath();
+					ctx.strokeStyle="gold";
+					ctx.moveTo(v6[0], v6[1]);
+					ctx.lineTo(v8[0], v8[1]);
+					ctx.stroke();
+
+					ctx.beginPath();
+					ctx.strokeStyle="gold";
+					ctx.moveTo(v7[0], v7[1]);
+					ctx.lineTo(v9[0], v9[1]);
+					ctx.stroke();
+
+				}
+				ctx.restore();
+			}
+
+			function kairouanUnit(ctx,size,lw){
+				let v0 = [0.5*size,0];
+				let v1 = [0.45*size,0.1*size];
+				let v2 = [0.05*size,0.1*size];
+				let v3 = [0.45*size,-0.1*size];
+				let v4 = [0.05*size,-0.1*size];
+
+				//diagonals
+				let v5 = [0.3*size,-0.5*size];
+				let v6 = rot(-45,[0.45*size,0.1*size]);//[0.35*size,-0.2*size];
+				let v7 = [0.1*size,0.05*size];
+
+				let v8 = [0.3*size, 0.5*size];
+				let v9 = rot(45,[0.45*size,-0.1*size]);//[0.35*size,0.2*size];
+				let v10 = [0.1*size,-0.05*size];
+
+				//alternative
+				//va = [0.6,0.1,0];
+				//vb = [0.6,-0.1,0];
+
+				ctx.save();
+				ctx.lineWidth=lw;
+				for(let i=0; i < 360; i+=90){
+					ctx.rotate(Math.PI/180*i);
+			
+					ctx.beginPath();
+					ctx.strokeStyle="gold";
+					ctx.moveTo(v0[0], v0[1]);
+					ctx.lineTo(v1[0], v1[1]);
+					ctx.lineTo(v2[0], v2[1]);
+					ctx.stroke();
+
+					ctx.strokeStyle="gold";
+					tracePath(ctx,[v0,v3,v4]);
+
+					ctx.strokeStyle="gold";
+					tracePath(ctx,[v5,v6,v7]);
+
+					ctx.strokeStyle="gold";
+					tracePath(ctx,[v8,v9,v10]);
+				}
+				ctx.restore();
+			}
+
+			function tracePath(ctx,line){
+				ctx.beginPath();
+				ctx.moveTo(line[0][0], line[0][1]);
+				for(let i=1; i<line.length; i++){
+					ctx.lineTo(line[i][0],line[i][1])
+				}
+				ctx.stroke();
+			}
+
+			function rot(ang, v){
+				let B = ang * Math.PI/180;
+				return [
+					Math.cos(B)*v[0]-Math.sin(B)*v[1],
+					Math.sin(B)*v[0]+Math.cos(B)*v[1]
+				];
+			}
+		</script>
+	<head>
 	<body>
-		<canvas id="canvas" width="800" height="800">No HTML Canvas Support :(</canvas>
+		<canvas id="canvas" width="800" height="800"></canvas>
+		<br>
+		<select id="select">
+			<option value="cordoba">Cordoba</option>
+			<option value="fahidi">Fahidi</option>
+			<option value="kharraqan">Kharraqan</option>
+			<option value="madrese">Madrese</option>
+			<option value="kairouan">Kairouan</option>
 	</body>
-</html> 
+</html>
