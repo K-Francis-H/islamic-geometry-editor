@@ -12,6 +12,7 @@
 				let func3 = function(){kharraqanUnit(ctx,80,2)};
 				let func4 = function(){madreseUnit(ctx,40,2)};
 				let func5 = function(){kairouanUnit(ctx,80,2)};
+				let func6 = function(){madreseUnitAlt(ctx,40,2)};
 
 
 				//let g = ctx.createRadialGradient(400,400,200,400,400,400);
@@ -29,6 +30,7 @@
 						case "fahidi": f = func2; break;
 						case "kharraqan": f = func3; break;
 						case "madrese": f = func4; break;
+						case "madrese_alt": f = func6; break;
 						case "kairouan": f = func5; break;
 					}
 					render(ctx, canvas, f);
@@ -243,6 +245,57 @@
 				ctx.restore();
 			}
 
+			function madreseUnitAlt(ctx, size, lw){
+				let c8 = 360/8 * Math.PI/180;
+				let c16 = c8/2;
+				let v1 = [0.5*size,0];
+				let v2 = [0.8*size,1*size];
+				let v3 = [0.8*size,-1*size];
+				//0.3* looks great too, though its a straight line no inner star
+				let v4 = [0.2*Math.sin(c8)*size,0.2*Math.cos(c8)*size];
+				let v5 = [0.2*Math.sin(c8)*size,-0.2*Math.cos(c8)*size];
+
+				let v6 = [0.9*Math.sin(c8*1.75)*size,-0.9*Math.cos(c8*1.75)*size];
+				let v7 = [0.9*Math.sin(c8*1.75)*size,0.9*Math.cos(c8*1.75)*size];
+
+				let v8 = [0.7*size,-1*size];
+				let v9 = [0.7*size,1*size];
+
+				ctx.save();
+				ctx.lineWidth=lw;
+				//trace paths [v2,v1,v3] , [v4,v6,v5]
+				//i+=90 looks cool too
+				for(let i=0; i < 360; i+=90){
+					ctx.rotate(Math.PI/180*i);
+
+					ctx.beginPath();
+					ctx.strokeStyle="gold";
+					ctx.moveTo(v4[0], v4[1]);
+					ctx.lineTo(v6[0], v6[1]);
+					ctx.stroke();
+
+					ctx.beginPath();
+					ctx.strokeStyle="gold";
+					ctx.moveTo(v5[0], v5[1]);
+					ctx.lineTo(v7[0], v7[1]);
+					ctx.stroke();
+
+					ctx.beginPath();
+					ctx.strokeStyle="gold";
+					ctx.moveTo(v6[0], v6[1]);
+					ctx.lineTo(v8[0], v8[1]);
+					ctx.stroke();
+
+					ctx.beginPath();
+					ctx.strokeStyle="gold";
+					ctx.moveTo(v7[0], v7[1]);
+					ctx.lineTo(v9[0], v9[1]);
+					ctx.stroke();
+
+				}
+				ctx.restore();
+			}
+
 			function kairouanUnit(ctx,size,lw){
 				let v0 = [0.5*size,0];
 				let v1 = [0.45*size,0.1*size];
@@ -313,6 +366,7 @@
 			<option value="fahidi">Fahidi</option>
 			<option value="kharraqan">Kharraqan</option>
 			<option value="madrese">Madrese</option>
+			<option value="madrese_alt">Madrese Alt</option>
 			<option value="kairouan">Kairouan</option>
 	</body>
 </html>
